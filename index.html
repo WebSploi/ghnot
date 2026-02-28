@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Garden Dashboard</title>
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: Arial;
+            padding: 20px;
+        }
+        h1 { color: #00ffcc; }
+        .card {
+            background: #1e293b;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            vertical-align: top;
+            width: 22%;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🌱 Garden Horizons Dashboard</h1>
+
+<div id="plants"></div>
+<div id="gear"></div>
+<div id="weather"></div>
+
+<script>
+async function load() {
+    const res = await fetch("/api/stock");
+    const data = await res.json();
+
+    document.getElementById("plants").innerHTML = `
+        <div class="card">
+            <h2>Legendary</h2>${data.legendary?.join("<br>")}
+        </div>
+        <div class="card">
+            <h2>Epic</h2>${data.epic?.join("<br>")}
+        </div>
+        <div class="card">
+            <h2>Rare</h2>${data.rare?.join("<br>")}
+        </div>
+        <div class="card">
+            <h2>Uncommon</h2>${data.uncommon?.join("<br>")}
+        </div>
+    `;
+
+    document.getElementById("gear").innerHTML = `
+        <div class="card">
+            <h2>Gear</h2>${data.gear?.join("<br>")}
+        </div>
+    `;
+
+    document.getElementById("weather").innerHTML = `
+        <div class="card">
+            <h2>Weather</h2>${data.weather?.join("<br>")}
+        </div>
+    `;
+}
+
+setInterval(load, 5000);
+load();
+</script>
+
+</body>
+</html>
